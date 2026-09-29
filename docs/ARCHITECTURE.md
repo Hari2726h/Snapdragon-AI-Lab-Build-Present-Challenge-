@@ -13,6 +13,7 @@ Rakshak Edge must deliver a useful answer when the PC is offline, keep sensitive
 5. The Snapdragon production profile can replace that compact reference model with an INT8 encoder through ONNX Runtime QNN.
 6. A calibrated fusion layer combines both scores and keeps the top supporting evidence.
 7. The response returns a risk band, plain-language evidence, and safe actions.
+8. For a supplied conversation, the thread engine analyzes each turn and detects identity setup, isolation, and extraction across time.
 
 ## Production topology
 
@@ -31,6 +32,9 @@ Input boundary (size limit, no persistence)
                                                 |
                                                 v
                                   Risk, reasons, safe action
+                                                |
+                           Conversation mode ---+
+                           turn timeline + attack chain
 ```
 
 ## Why hybrid
@@ -43,12 +47,17 @@ Security decisions need traceable evidence. Rules catch crisp, high-risk facts s
 - No cloud model
 - No analytics SDK
 - No third-party font or JavaScript request
-- Browser history remains in local storage only when that feature is enabled
+- No raw message history in local storage or on the server
+- Exported reports omit the pasted source content
 - API binds to loopback by default
 
 ## Model contract
 
 The checked-in reference classifier uses multinomial Naive Bayes over word, word-bigram, and character n-gram features. It trains deterministically from 72 transparent examples and is evaluated on a fixed 18-message holdout. The production classifier accepts token IDs and an attention mask and produces logits for `low`, `medium`, and `high`. The recommended NPU candidate is a MobileBERT-class encoder fine-tuned on a larger consented and synthetic Indian scam corpus, exported to ONNX, statically quantized to INT8, and compiled or profiled for Snapdragon through Qualcomm AI Hub.
+
+## Evaluation contract
+
+The model holdout measures only the semantic classifier. A separate locked 45-case suite measures the complete rules-plus-model product. The suite is balanced across low, medium, and high risk and never participates in training. `benchmarks/evaluate_system.py` prints every error and the full confusion matrix.
 
 ## Failure behavior
 

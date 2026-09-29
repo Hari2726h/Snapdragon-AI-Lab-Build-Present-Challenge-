@@ -11,6 +11,7 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 from engine.analyzer import analyze
+from engine.thread_analyzer import analyze_thread
 
 ROOT = Path(__file__).resolve().parent
 WEB = ROOT / "web"
@@ -19,7 +20,7 @@ PORT = int(os.getenv("RAKSHAK_PORT", "8765"))
 
 
 class Handler(BaseHTTPRequestHandler):
-    server_version = "RakshakEdge/1.0"
+    server_version = "RakshakEdge/2.0"
 
     def _json(self, payload: dict, status: int = 200) -> None:
         body = json.dumps(payload, ensure_ascii=False).encode("utf-8")
@@ -33,7 +34,8 @@ class Handler(BaseHTTPRequestHandler):
         self.wfile.write(body)
 
     def do_POST(self) -> None:  # noqa: N802
-        if urlparse(self.path).path != "/api/analyze":
+        route = urlparse(self.path).path
+        if route not in {"/api/analyze", "/api/thread"}:
             self._json({"error": "Not found"}, 404)
             return
         try:
@@ -41,17 +43,23 @@ class Handler(BaseHTTPRequestHandler):
             if length > 100_000:
                 raise ValueError("Input is too large")
             data = json.loads(self.rfile.read(length) or b"{}")
-            text = str(data.get("text", "")).strip()
-            if not text:
-                raise ValueError("Paste a message, link, or QR payload to analyze")
-            self._json(analyze(text))
+            if route == "/api/thread":
+                messages = data.get("messages", [])
+                if not isinstance(messages, list):
+                    raise ValueError("Messages must be a list")
+                self._json(analyze_thread(messages))
+            else:
+                text = str(data.get("text", "")).strip()
+                if not text:
+                    raise ValueError("Paste a message, link, or QR payload to analyze")
+                self._json(analyze(text))
         except (ValueError, json.JSONDecodeError) as exc:
             self._json({"error": str(exc)}, 400)
 
     def do_GET(self) -> None:  # noqa: N802
         path = urlparse(self.path).path
         if path == "/api/health":
-            self._json({"status": "ready", "mode": "local", "network": "disabled"})
+            self._json({"status": "ready", "mode": "local", "network": "disabled", "capabilities": ["message-analysis", "conversation-attack-chain"]})
             return
         relative = "index.html" if path == "/" else path.lstrip("/")
         target = (WEB / relative).resolve()

@@ -14,17 +14,17 @@ Choose **KYC + OTP** and click **Analyze privately**.
 
 Point to the score, top signals, measured latency, and safest next step.
 
-## 0:45 - 1:05 | A harder scam
+## 0:45 - 1:10 | The winning differentiator
 
-Choose **Boss request**.
+Scroll to **Conversation intelligence** and click **Analyze conversation privately**.
 
-"This example has no malicious link, OTP, UPI handle, or fake domain. The bundled semantic model still recognizes the executive-impersonation and voucher pattern. Its model output and confidence appear directly in the interface."
+"Most detectors score one message at a time. This scam starts with a new identity, isolates the target, then asks for voucher codes. Rakshak links all three turns, shows when each stage appeared, and recommends the intervention point. The raw conversation is never saved."
 
-## 1:05 - 1:20 | Responsible behavior
+## 1:10 - 1:20 | Measured evidence
 
-Choose **Safe message**.
+Point to **Claims a judge can reproduce**.
 
-"The engine understands an awareness message differently from a credential request. A low score never means proven safe, so the interface keeps a verification reminder."
+"The locked 45-case system suite scores 97.78 percent. All high-risk cases are correct, and the evaluator prints the one false positive instead of hiding it. Ten regression tests cover both accuracy and privacy behavior."
 
 ## 1:20 - 1:30 | Snapdragon fit
 

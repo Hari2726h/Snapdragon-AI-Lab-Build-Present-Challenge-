@@ -2,5 +2,6 @@
 
 from .analyzer import analyze
 from .model import evaluate
+from .thread_analyzer import analyze_thread
 
-__all__ = ["analyze", "evaluate"]
+__all__ = ["analyze", "analyze_thread", "evaluate"]

@@ -1,6 +1,7 @@
 import unittest
 
 from engine.analyzer import analyze
+from engine.thread_analyzer import analyze_thread
 
 
 class AnalyzerTests(unittest.TestCase):
@@ -37,6 +38,25 @@ class AnalyzerTests(unittest.TestCase):
     def test_model_metadata_is_exposed(self):
         result = analyze("Please review the quarterly budget before the finance meeting.")
         self.assertIn("probabilities", result["model"])
+
+    def test_conversation_attack_chain(self):
+        result = analyze_thread([
+            "Hi, this is Arun from finance. Save my new number.",
+            "I am boarding a flight, so do not call. This client issue is confidential.",
+            "Purchase five vouchers and send the codes before 4 PM.",
+        ])
+        self.assertEqual(result["level"], "high")
+        self.assertGreaterEqual(len(result["attack_chain"]), 2)
+        self.assertEqual(result["meta"]["network_calls"], 0)
+
+    def test_conversation_requires_multiple_messages(self):
+        with self.assertRaises(ValueError):
+            analyze_thread(["Only one message"])
+
+    def test_conversation_does_not_persist_raw_text(self):
+        result = analyze_thread(["Hello from the office", "See you at the meeting"])
+        self.assertFalse(result["meta"]["raw_text_persisted"])
+        self.assertNotIn("text", result["turns"][0])
 
 
 if __name__ == "__main__":

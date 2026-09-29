@@ -7,7 +7,7 @@ const workspaceDir = "/home/hariharan.c/Downloads/Snapdragon AI Lab Build & Pres
 const SKILL_DIR = "/home/hariharan.c/.codex/plugins/cache/openai-primary-runtime/presentations/26.904.11930/skills/presentations";
 const RUNTIME_PYTHON = "/home/hariharan.c/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3";
 const TMP_DIR = path.join(workspaceDir, ".codex-build");
-const FINAL_PPTX = path.join(workspaceDir, "submission", "Rakshak_Edge_Pitch.pptx");
+const FINAL_PPTX = path.join(workspaceDir, "submission", "Rakshak_Edge_Pitch_Final.pptx");
 await fs.mkdir(TMP_DIR, { recursive: true });
 await fs.mkdir(path.dirname(FINAL_PPTX), { recursive: true });
 
@@ -74,9 +74,28 @@ function notes(slide, copy) { slide.speakerNotes.textFrame.setText(copy); }
 
 // 4. Architecture
 {
-  const s = p.slides.add(); base(s, "TECHNICAL IMPLEMENTATION", "03");
+  const s = p.slides.add(); base(s, "CORE INNOVATION", "03");
+  text(s, "Scams unfold across a conversation", 68, 96, 1040, 58, 40, C.ink, true);
+  text(s, "Rakshak connects the stages that single-message classifiers lose.", 70, 157, 900, 38, 19, C.muted);
+  const turns = [
+    ["01", "IDENTITY SETUP", "Hi, this is Arun from finance. Save my new number.", "42", C.amber],
+    ["02", "ISOLATION", "I am boarding a flight. Do not call. Keep this confidential.", "55", C.amber],
+    ["03", "EXTRACTION", "Purchase five vouchers and send the codes before 4 PM.", "72", C.red],
+  ];
+  turns.forEach((m,i)=>{const y=232+i*112;box(s,70,y,730,88,"#0B1C16",C.line,12);text(s,m[0],92,y+26,48,26,14,C.lime,true);text(s,m[1],158,y+14,185,24,12,m[4],true,{letterSpacing:1.1});text(s,m[2],158,y+43,535,27,16,C.ink);text(s,m[3],716,y+23,56,36,27,m[4],true,{textAlign:"right"});});
+  box(s, 850, 232, 350, 312, "#10271E", C.lime, 18);
+  text(s, "81", 888, 265, 160, 88, 68, C.red, true); text(s, "/100", 1034, 313, 72, 28, 16, C.muted);
+  text(s, "COORDINATED SCAM", 890, 374, 240, 22, 12, C.red, true, {letterSpacing:1.2});
+  text(s, "Identity setup\nIsolation and pressure\nMoney or access request", 890, 416, 268, 92, 19, C.ink, true, {lineSpacing:1.28});
+  box(s, 70, 600, 1130, 48, C.lime, C.lime, 8); text(s, "The raw conversation is processed in memory and never appears in the exported report.", 92, 613, 1088, 22, 16, C.bg, true);
+  notes(s, "Working conversation analyzer. Input contains three messages. Output: 81/100, three attack-chain stages, zero network calls, and no raw message persistence.");
+}
+
+// 5. Architecture
+{
+  const s = p.slides.add(); base(s, "TECHNICAL IMPLEMENTATION", "04");
   text(s, "Hybrid reasoning keeps security explainable", 68, 96, 1110, 64, 38, C.ink, true);
-  text(s, "Transparent signals stay authoritative. A compact classifier adds semantic context and runs on the Hexagon NPU.", 70, 164, 1080, 56, 18, C.muted);
+  text(s, "Transparent signals stay authoritative. A compact classifier adds context today; the production profile moves the encoder to the Hexagon NPU.", 70, 164, 1080, 56, 18, C.muted);
   const stages = [
     ["Input boundary", "Loopback API\nNo persistence", C.panel],
     ["Evidence engines", "URL + entity rules\nLocal semantic model", "#10261D"],
@@ -95,9 +114,9 @@ function notes(slide, copy) { slide.speakerNotes.textFrame.setText(copy); }
   notes(s, "Technical references: ONNX Runtime QNN Execution Provider, https://onnxruntime.ai/docs/execution-providers/QNN-ExecutionProvider.html; Qualcomm AI Hub, https://aihub.qualcomm.com/");
 }
 
-// 5. AI evidence
+// 6. AI evidence
 {
-  const s = p.slides.add(); base(s, "LIVE EVIDENCE", "04");
+  const s = p.slides.add(); base(s, "LIVE EVIDENCE", "05");
   text(s, "AI catches the scam\nwithout a malicious link", 68, 103, 970, 88, 34, C.ink, true, { lineSpacing: 1.0 });
   box(s, 70, 190, 305, 305, C.panel, C.line, 18);
   text(s, "72", 106, 218, 150, 105, 76, C.red, true); text(s, "/100", 246, 275, 70, 34, 18, C.muted);
@@ -108,41 +127,54 @@ function notes(slide, copy) { slide.speakerNotes.textFrame.setText(copy); }
   notes(s, "Input: Finance head here. I cannot take calls. Purchase five vouchers and send the numbers before the client meeting. Output from the checked-in hybrid analyzer: high risk, 72/100; local semantic model high-risk confidence 99.77%. The score is a risk indicator, not proof of fraud.");
 }
 
-// 6. Snapdragon fit
+// 7. Evaluation
 {
-  const s = p.slides.add(); base(s, "SNAPDRAGON ADVANTAGE", "05");
-  text(s, "Measured locally, designed for Snapdragon", 68, 104, 1040, 72, 38, C.ink, true);
-  const metrics = [["94.44%", "fixed holdout accuracy"], ["18", "unseen holdout messages"], ["7", "regression tests passing"], ["45 TOPS", "Snapdragon X Elite NPU"]];
-  metrics.forEach((m,i)=>{const x=70+i*285;box(s,x,245,255,170,i===3?C.lime:C.panel,i===3?C.lime:C.line,16);text(s,m[0],x+22,271,205,58,40,i===3?C.bg:C.lime,true);text(s,m[1],x+22,347,205,45,15,i===3?"#315512":C.muted);});
-  text(s, "Proof today and an NPU upgrade path", 70, 470, 420, 35, 24, C.ink, true);
-  text(s, "The repository includes the train and holdout corpus, the evaluation script, and the single disclosed model error. The Snapdragon profile upgrades the compact reference model to an INT8 encoder while keeping the same local API and evidence layer.", 70, 520, 1080, 80, 20, C.muted, false, { lineSpacing: 1.25 });
-  text(s, "Holdout: high 6/6, low 6/6, medium 5/6. No cloud call during inference.", 70, 628, 1050, 30, 16, C.mint, true);
-  notes(s, "Model evaluation is reproducible with python benchmarks/evaluate_model.py. 17 of 18 fixed holdout examples correct. Qualcomm states Snapdragon X Elite includes a Hexagon NPU with up to 45 TOPS. Source: Snapdragon X Elite product brief, https://docs.qualcomm.com/bundle/publicresource/87-71417-1_REV_D_Snapdragon_X_Elite_Product_Brief.pdf");
+  const s = p.slides.add(); base(s, "MEASURED EVIDENCE", "06");
+  text(s, "A locked suite tests the complete product", 68, 104, 1040, 62, 38, C.ink, true);
+  const metrics = [["97.78%", "45-case system suite"], ["15 / 15", "high-risk cases"], ["15 / 15", "medium-risk cases"], ["10 / 10", "regression tests"]];
+  metrics.forEach((m,i)=>{const x=70+i*285;box(s,x,220,255,170,i===0?C.lime:C.panel,i===0?C.lime:C.line,16);text(s,m[0],x+22,247,205,58,38,i===0?C.bg:C.lime,true);text(s,m[1],x+22,324,205,45,15,i===0?"#315512":C.muted);});
+  box(s, 70, 445, 1120, 112, "#0B1C16", C.line, 12);
+  text(s, "ONE DISCLOSED ERROR", 94, 468, 210, 22, 12, C.amber, true, {letterSpacing:1.0});
+  text(s, "A safety reminder about OTP and PIN is conservatively rated medium instead of low.", 94, 505, 790, 30, 20, C.ink, true);
+  text(s, "39", 1040, 474, 90, 54, 38, C.amber, true, {textAlign:"right"});
+  text(s, "The system suite is balanced, never used for training, and prints every error. The model-only holdout remains 94.44%.", 72, 600, 1080, 46, 17, C.muted);
+  notes(s, "Reproduce with python benchmarks/evaluate_system.py. 44 of 45 balanced non-training cases correct. All 15 high-risk and 15 medium-risk cases correct. The evaluator prints the single false positive.");
 }
 
-// 7. Validation
+// 8. Snapdragon fit
 {
-  const s = p.slides.add(); base(s, "DEPLOYMENT & ACCESSIBILITY", "06");
-  text(s, "Working product with measured evidence", 68, 106, 1050, 58, 38, C.ink, true);
+  const s = p.slides.add(); base(s, "SNAPDRAGON ADVANTAGE", "07");
+  text(s, "Local protection is the product advantage", 68, 104, 1040, 64, 38, C.ink, true);
+  const metrics = [["0", "cloud calls by default"], ["< 1 ms", "median reference CPU"], ["INT8", "production model target"], ["45 TOPS", "Snapdragon X Elite NPU"]];
+  metrics.forEach((m,i)=>{const x=70+i*285;box(s,x,225,255,170,i===3?C.lime:C.panel,i===3?C.lime:C.line,16);text(s,m[0],x+22,252,205,58,38,i===3?C.bg:C.lime,true);text(s,m[1],x+22,329,205,45,15,i===3?"#315512":C.muted);});
+  text(s, "Same private API, stronger production encoder", 70, 470, 720, 35, 24, C.ink, true);
+  text(s, "The reference model makes the complete demo reproducible today. On Snapdragon X Series, the production profile swaps in an INT8 encoder through ONNX Runtime QNN while keeping the evidence layer, conversation logic, and offline boundary unchanged.", 70, 520, 1080, 88, 19, C.muted, false, {lineSpacing:1.25});
+  notes(s, "Qualcomm states Snapdragon X Elite includes a Hexagon NPU with up to 45 TOPS. Source: Snapdragon X Elite product brief, https://docs.qualcomm.com/bundle/publicresource/87-71417-1_REV_D_Snapdragon_X_Elite_Product_Brief.pdf. QNN source: https://onnxruntime.ai/docs/execution-providers/QNN-ExecutionProvider.html");
+}
+
+// 9. Deployment and guardrails
+{
+  const s = p.slides.add(); base(s, "DEPLOYMENT & RESPONSIBILITY", "08");
+  text(s, "A safety product needs honest failure behavior", 68, 106, 1080, 58, 38, C.ink, true);
   const rows = [
-    ["Runs today", "One command, Python standard library, offline demo"],
-    ["Measured", "Transparent 72-train / 18-holdout corpus and disclosed error"],
-    ["Accessible", "Keyboard flow, high contrast, reduced motion, plain language"],
-    ["Deployable", "QNN adapter, INT8 model contract, target acceptance checks"],
-    ["Responsible", "Threat model, bounded claims, no server-side history"],
+    ["Runs today", "One command, standard library server, offline message and thread APIs"],
+    ["Private", "No raw history; exported reports exclude the source conversation"],
+    ["Accessible", "Keyboard flow, high contrast, reduced motion, plain-language actions"],
+    ["Deployable", "QNN adapter, INT8 model contract, CPU fallback, acceptance checks"],
+    ["Bounded", "Risk indicator, not a fraud verdict; one false positive disclosed"],
   ];
   rows.forEach((r,i)=>{const y=195+i*84;text(s,String(i+1).padStart(2,"0"),72,y+6,55,26,14,C.lime,true);box(s,138,y,1,55,C.line);text(s,r[0],172,y,210,32,21,C.ink,true);text(s,r[1],420,y+2,730,36,18,C.muted);box(s,70,y+65,1120,1,C.line);});
   box(s, 70, 630, 470, 35, C.lime, C.lime, 6); text(s, "python app.py  →  localhost:8765", 86, 638, 435, 20, 14, C.bg, true, { fontFamily: "Courier New" });
 }
 
-// 8. Close
+// 10. Close
 {
   const s = p.slides.add(); s.background.fill = C.lime;
   text(s, "RAKSHAK EDGE", 70, 50, 260, 26, 13, C.bg, true, { letterSpacing: 1.8 });
   text(s, "A safer pause\nbefore the tap", 66, 130, 850, 170, 66, C.bg, true, { lineSpacing: .92 });
-  text(s, "Private by design. Explainable by default. Ready for Snapdragon.", 72, 345, 930, 52, 26, "#315512", false);
+  text(s, "Conversation-aware protection that stays on the PC", 72, 345, 930, 52, 26, "#315512", false);
   box(s, 72, 473, 550, 96, "#07130F", "#07130F", 14); text(s, "LIVE DEMO", 96, 491, 110, 22, 11, C.lime, true, { letterSpacing: 1.4 }); text(s, "python app.py", 96, 526, 440, 28, 22, C.ink, true, { fontFamily: "Courier New" });
-  text(s, "GitHub-ready repository  |  Pitch deck  |  Brief  |  Demo script", 72, 646, 760, 24, 14, "#315512", true);
+  text(s, "Working demo, locked evaluation, privacy threat model, Snapdragon profile", 72, 646, 850, 24, 14, "#315512", true);
   text(s, "Hariharan C", 1030, 646, 180, 24, 14, C.bg, true, { textAlign: "right" });
 }
 
@@ -151,7 +183,7 @@ await fs.mkdir(stagingDir, { recursive: true });
 const candidatePath = path.join(stagingDir, "candidate.pptx");
 await (await PresentationFile.exportPptx(p)).save(candidatePath);
 await finalizePresentation({
-  explicitTotalSlideCount: 8,
+  explicitTotalSlideCount: 10,
   requiredNativeTableOwnerSlides: [],
   requiredNativeChartOwnerSlides: [],
   workspaceDir,
@@ -163,6 +195,6 @@ await finalizePresentation({
   layoutArgs: ["--expected-slide-size-emu", "12192000,6858000", "--validate-heading-fit"],
   fontPolicy: { basis: "design", families: [family, "Courier New"] },
   verifyArtifactToolImport: true,
-  receiptPath: path.join(stagingDir, "Rakshak_Edge_Pitch_v6.validation.json"),
+  receiptPath: path.join(stagingDir, "Rakshak_Edge_Pitch_Final.validation.json"),
 });
 console.log(FINAL_PPTX);

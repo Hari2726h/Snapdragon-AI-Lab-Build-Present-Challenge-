@@ -8,7 +8,8 @@ URGENCY = {
 
 SECRETS = {
     "otp", "one time password", "pin", "cvv", "password", "screen share",
-    "remote access", "anydesk", "teamviewer", "verification code", "security code",
+    "remote access", "anydesk", "teamviewer", "quicksupport", "access number",
+    "verification code", "security code", "six digit code",
 }
 
 PAYMENT = {
@@ -20,7 +21,8 @@ PAYMENT = {
 IMPERSONATION = {
     "bank officer", "police", "customs", "income tax", "rbi", "courier",
     "hr department", "ceo", "manager", "support team", "electricity board",
-    "aadhaar", "pan card", "kyc", "digital arrest",
+    "aadhaar", "pan card", "kyc", "digital arrest", "bank security",
+    "electricity service", "finance head",
 }
 
 PRESSURE = {
@@ -31,7 +33,8 @@ PRESSURE = {
 
 SAFE_CONTEXT = {
     "never share otp", "do not share otp", "official warning", "fraud awareness",
-    "security training", "sample scam", "report suspicious",
+    "security training", "sample scam", "report suspicious", "railway app",
+    "never install remote access",
 }
 
 SHORTENERS = {

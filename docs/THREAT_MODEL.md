@@ -15,6 +15,7 @@
 - Hidden destinations and redirects
 - Requests for credentials, payments, gift cards, or crypto
 - Mixed English and common Indian payment vocabulary
+- Multi-message grooming that separates identity, isolation, and payment across turns
 
 ## Out of scope
 
@@ -31,6 +32,8 @@
 - User text is inserted with `textContent`, not HTML.
 - Content Security Policy restricts scripts and connections to the local origin.
 - The app does not store server-side message history.
+- Conversation results contain scores and stage labels but omit the raw source messages.
+- Downloaded reports intentionally exclude the analyzed source content.
 
 ## Human factors
 

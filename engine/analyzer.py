@@ -106,17 +106,20 @@ def analyze(message: str) -> dict:
     elif semantic["label"] == "medium" and semantic["confidence"] >= 0.46:
         signals.append(Signal("Uncertain sender intent", "The local language model found a suspicious request pattern that deserves verification.", round(7 + semantic["confidence"] * 8), "semantic", f"{semantic['confidence'] * 100:.1f}% model confidence"))
 
-    safe_discount = 20 if _terms(lower, SAFE_CONTEXT) else 0
+    safe_matches = _terms(lower, SAFE_CONTEXT)
+    safe_discount = 32 if safe_matches else 0
     raw = sum(item.weight for item in signals)
     score = max(0, min(99, round(100 * (1 - math.exp(-raw / 65)) - safe_discount)))
-    if semantic["label"] == "high" and semantic["confidence"] >= 0.92:
+    if not safe_matches and semantic["label"] == "high" and semantic["confidence"] >= 0.92:
         score = max(score, 72)
-    elif semantic["label"] == "high" and semantic["confidence"] >= 0.60:
+    elif not safe_matches and semantic["label"] == "high" and semantic["confidence"] >= 0.60:
         score = max(score, 55)
-    elif semantic["label"] == "medium" and semantic["confidence"] >= 0.60:
+    elif not safe_matches and semantic["label"] == "medium" and semantic["confidence"] >= 0.60:
         score = max(score, 42)
     if any(s.category == "credential" for s in signals) and any(s.category in {"payment", "link"} for s in signals):
         score = min(99, score + 8)
+    if not safe_matches and any(s.category == "credential" for s in signals) and any(s.category == "identity" for s in signals):
+        score = max(70, min(99, score + 18))
     if {"pressure", "payment", "identity"}.issubset({s.category for s in signals}):
         score = min(99, score + 10)
 

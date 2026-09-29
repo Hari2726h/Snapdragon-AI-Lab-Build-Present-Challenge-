@@ -41,7 +41,7 @@
     <section class="workspace" id="analyzer" aria-labelledby="analyzer-title">
       <div class="workspace-head">
         <div><p class="section-number">01 / ANALYZE</p><h2 id="analyzer-title">What did you receive?</h2></div>
-        <p>Works with SMS, email, WhatsApp text, URLs, and QR payloads.</p>
+        <p>Single-message triage for SMS, email, WhatsApp text, URLs, and QR payloads.</p>
       </div>
       <div class="analyzer-grid">
         <div class="input-side">
@@ -73,18 +73,54 @@
             <div class="model-proof"><span>LOCAL SEMANTIC MODEL</span><strong id="modelMeta">Ready</strong><span>NO CLOUD</span></div>
             <div class="evidence-head"><span>Why Rakshak flagged this</span><span id="latency"></span></div>
             <div class="signals" id="signals"></div>
-            <div class="action-box"><strong>Safest next step</strong><p id="primaryAction"></p><button type="button" id="copyReport">Copy safety report</button></div>
+            <div class="action-box"><strong>Safest next step</strong><p id="primaryAction"></p><div class="report-actions"><button type="button" id="copyReport">Copy safety report</button><button type="button" id="downloadReport">Download private report</button></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="thread-lab" id="thread-lab" aria-labelledby="thread-title">
+      <div class="workspace-head">
+        <div><p class="section-number">02 / CONVERSATION INTELLIGENCE</p><h2 id="thread-title">See the scam build across messages</h2></div>
+        <p>Rakshak links identity setup, isolation, and the final extraction request without storing the conversation.</p>
+      </div>
+      <div class="thread-grid">
+        <div class="thread-input">
+          <div class="thread-label"><strong>Conversation under review</strong><span>3 messages · local memory only</span></div>
+          <label class="chat-row"><span>1</span><textarea class="thread-message" aria-label="Conversation message 1">Hi, this is Arun from finance. Save my new number.</textarea></label>
+          <label class="chat-row"><span>2</span><textarea class="thread-message" aria-label="Conversation message 2">I am boarding a flight, so do not call. This client issue is confidential.</textarea></label>
+          <label class="chat-row"><span>3</span><textarea class="thread-message" aria-label="Conversation message 3">Purchase five vouchers and send the codes before 4 PM.</textarea></label>
+          <button class="analyze-button" id="analyzeThread" type="button"><span>Analyze conversation privately</span><kbd>3 turns</kbd></button>
+        </div>
+        <div class="thread-output" aria-live="polite">
+          <div class="thread-empty" id="threadEmpty"><span class="chain-glyph">1—2—3</span><h3>Attack-chain analysis ready</h3><p>Each message is scored, then Rakshak checks how the request escalates.</p></div>
+          <div class="thread-result hidden" id="threadResult">
+            <div class="thread-scoreline"><div><strong id="threadScore">0</strong><span>/100</span></div><div><p id="threadLevel">RISK</p><h3 id="threadVerdict"></h3></div></div>
+            <p class="micro-label">MESSAGE RISK TIMELINE</p><div class="turns" id="threadTurns"></div>
+            <p class="micro-label">DETECTED ATTACK CHAIN</p><div class="attack-chain" id="attackChain"></div>
+            <div class="intervention"><strong>Intervene now</strong><p id="threadAction"></p></div>
+            <div class="thread-meta"><span id="threadMeta"></span><span>0 network calls · 0 raw messages saved</span></div>
           </div>
         </div>
       </div>
     </section>
 
     <section class="how" aria-labelledby="how-title">
-      <div class="workspace-head"><div><p class="section-number">02 / HOW IT WORKS</p><h2 id="how-title">Evidence, not a black box</h2></div><p>A hybrid pipeline keeps latency low and explanations useful.</p></div>
+      <div class="workspace-head"><div><p class="section-number">03 / HOW IT WORKS</p><h2 id="how-title">Evidence, not a black box</h2></div><p>A hybrid pipeline keeps latency low and explanations useful.</p></div>
       <div class="pipeline">
         <article><span>1</span><h3>Extract</h3><p>Find links, payment handles, amounts, phone numbers, and credential requests.</p></article>
         <article><span>2</span><h3>Reason locally</h3><p>Combine transparent safety rules with a trained local semantic model. The Snapdragon profile upgrades it to QNN.</p></article>
         <article><span>3</span><h3>Guide</h3><p>Show the evidence and a safe verification path without uploading the message.</p></article>
+      </div>
+    </section>
+
+    <section class="proof" aria-labelledby="proof-title">
+      <div class="workspace-head"><div><p class="section-number">04 / VERIFIED BUILD</p><h2 id="proof-title">Claims a judge can reproduce</h2></div><p>The repository exposes its data, one model error, tests, and measured local latency.</p></div>
+      <div class="proof-grid">
+        <article><strong>94.44%</strong><span>fixed holdout accuracy</span><small>17 of 18 messages</small></article>
+        <article><strong>10 / 10</strong><span>regression tests passing</span><small>including conversation privacy</small></article>
+        <article><strong>&lt; 1 ms</strong><span>median local analysis</span><small>reference CPU benchmark</small></article>
+        <article><strong>0</strong><span>cloud calls by default</span><small>loopback API only</small></article>
       </div>
     </section>
 
@@ -94,7 +130,7 @@
     </section>
   </main>
 
-  <footer><span>Rakshak Edge</span><span>Built by Hariharan C for the Snapdragon AI Lab Build &amp; Present Challenge</span><span>v1.0</span></footer>
+  <footer><span>Rakshak Edge</span><span>Built by Hariharan C for the Snapdragon AI Lab Build &amp; Present Challenge</span><span>v2.0</span></footer>
 
   <dialog id="privacyDialog">
     <button class="close-dialog" id="closeDialog" aria-label="Close">×</button>
@@ -102,6 +138,7 @@
     <div class="proof-line"><span>API destination</span><code>127.0.0.1</code></div>
     <div class="proof-line"><span>External requests</span><code>0</code></div>
     <div class="proof-line"><span>Account required</span><code>No</code></div>
+    <div class="proof-line"><span>Analyses this session</span><code id="analysisCount">0</code></div>
     <p>Rakshak Edge serves its interface and analysis API from the same local process. The default build has no analytics SDK, ad tracker, cloud model, or remote font.</p>
   </dialog>
   <script src="/app.js" defer></script>

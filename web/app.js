@@ -8,6 +8,7 @@ const examples = {
   safe: "Official security notice: never share your OTP, PIN, CVV, or password. Report suspicious requests through the bank's official app."
 };
 let lastResult = null;
+let analysisCount = 0;
 
 message.addEventListener("input", () => $("counter").textContent = `${message.value.length.toLocaleString()} / 5,000`);
 document.querySelectorAll("[data-example]").forEach(button => button.addEventListener("click", () => {
@@ -32,7 +33,7 @@ async function analyze(){
     const response = await fetch("/api/analyze",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text})});
     const result = await response.json();
     if(!response.ok) throw new Error(result.error || "Analysis failed");
-    lastResult = result; render(result);
+    lastResult = result; analysisCount += 1; updatePrivacyCounter(); render(result);
   }catch(error){alert(error.message);}
   finally{button.disabled=false;button.querySelector("span").textContent="Analyze privately";}
 }
@@ -62,6 +63,57 @@ $("copyReport").addEventListener("click",async()=>{
   const report=[`Rakshak Edge: ${lastResult.verdict} (${lastResult.score}/100)`,lastResult.summary,"",...lastResult.signals.map(s=>`- ${s.title}: ${s.evidence}`),"",`Next: ${lastResult.actions[0]}`].join("\n");
   await navigator.clipboard.writeText(report); $("copyReport").textContent="Copied"; setTimeout(()=>$("copyReport").textContent="Copy safety report",1400);
 });
+
+$("downloadReport").addEventListener("click",()=>{
+  if(!lastResult)return;
+  downloadJson("rakshak-private-report.json", {
+    generated_by:"Rakshak Edge", verdict:lastResult.verdict, score:lastResult.score,
+    level:lastResult.level, evidence:lastResult.signals, recommended_actions:lastResult.actions,
+    privacy:lastResult.meta.privacy, note:"The pasted source message is intentionally excluded."
+  });
+});
+
+function updatePrivacyCounter(){ $("analysisCount").textContent=String(analysisCount); }
+
+function downloadJson(filename,data){
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+  const link=document.createElement("a");link.href=URL.createObjectURL(blob);link.download=filename;link.click();
+  setTimeout(()=>URL.revokeObjectURL(link.href),500);
+}
+
+$("analyzeThread").addEventListener("click",analyzeConversation);
+
+async function analyzeConversation(){
+  const messages=[...document.querySelectorAll(".thread-message")].map((field,index)=>({role:index===0?"new contact":"sender",text:field.value.trim()}));
+  if(messages.some(item=>!item.text)){document.querySelector(".thread-message:placeholder-shown")?.focus();return;}
+  const button=$("analyzeThread");button.disabled=true;button.querySelector("span").textContent="Linking the attack chain...";
+  try{
+    const response=await fetch("/api/thread",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({messages})});
+    const result=await response.json();if(!response.ok)throw new Error(result.error||"Conversation analysis failed");
+    analysisCount+=1;updatePrivacyCounter();renderThread(result);
+  }catch(error){alert(error.message);}
+  finally{button.disabled=false;button.querySelector("span").textContent="Analyze conversation privately";}
+}
+
+function renderThread(data){
+  $("threadEmpty").classList.add("hidden");$("threadResult").classList.remove("hidden");
+  $("threadScore").textContent=data.score;$("threadLevel").textContent=`${data.level.toUpperCase()} RISK`;
+  $("threadVerdict").textContent=data.verdict;$("threadAction").textContent=data.intervention[0];
+  $("threadMeta").textContent=`Peak turn ${data.meta.peak_single_message_score} · progression +${data.meta.progression_bonus}`;
+  $("threadTurns").replaceChildren(...data.turns.map(turn=>{
+    const node=document.createElement("div");node.className=`turn turn-${turn.level}`;
+    const top=document.createElement("div");const number=document.createElement("span");number.textContent=`0${turn.index}`;
+    const score=document.createElement("strong");score.textContent=turn.score;top.append(number,score);
+    const label=document.createElement("p");label.textContent=turn.top_signal;node.append(top,label);return node;
+  }));
+  $("attackChain").replaceChildren(...data.attack_chain.map((stage,index)=>{
+    const node=document.createElement("div");node.className="chain-stage";
+    const number=document.createElement("span");number.textContent=String(index+1).padStart(2,"0");
+    const body=document.createElement("div");const title=document.createElement("strong");title.textContent=stage.title;
+    const detail=document.createElement("p");detail.textContent=`Message ${stage.first_seen_at}: ${stage.detail}`;body.append(title,detail);node.append(number,body);return node;
+  }));
+  $("threadResult").scrollIntoView({behavior:"smooth",block:"nearest"});
+}
 
 const demo = new URLSearchParams(location.search).get("demo");
 if (demo && examples[demo]) {
