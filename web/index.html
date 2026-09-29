@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#07130f">
+  <meta name="description" content="Rakshak Edge analyses suspicious messages and links privately on your PC.">
+  <title>Rakshak Edge | Private scam defence</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <a class="skip" href="#analyzer">Skip to analyzer</a>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="Rakshak Edge home">
+      <span class="brand-mark" aria-hidden="true"><span></span></span>
+      <span>rakshak<span class="accent">.edge</span></span>
+    </a>
+    <div class="local-state"><span class="pulse"></span> Local protection active</div>
+    <button class="privacy-button" id="privacyButton" type="button">Privacy proof</button>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow">ON-DEVICE SOCIAL-ENGINEERING FIREWALL</p>
+        <h1 id="hero-title">Pause the scam<br><span>before the tap.</span></h1>
+        <p class="lede">Paste a suspicious message, payment request, or link. Rakshak Edge explains the risk on your PC and shows the safest next step.</p>
+        <div class="trust-row" aria-label="Product principles">
+          <span>Offline</span><span>Explainable</span><span>Private by design</span>
+        </div>
+      </div>
+      <div class="hero-visual" aria-hidden="true">
+        <div class="shield-orbit orbit-one"></div><div class="shield-orbit orbit-two"></div>
+        <div class="shield-core"><div class="shield-cut"></div><b>RE</b></div>
+        <div class="signal signal-a">OTP request blocked</div>
+        <div class="signal signal-b">Look-alike link found</div>
+        <div class="signal signal-c">Data stays here</div>
+      </div>
+    </section>
+
+    <section class="workspace" id="analyzer" aria-labelledby="analyzer-title">
+      <div class="workspace-head">
+        <div><p class="section-number">01 / ANALYZE</p><h2 id="analyzer-title">What did you receive?</h2></div>
+        <p>Works with SMS, email, WhatsApp text, URLs, and QR payloads.</p>
+      </div>
+      <div class="analyzer-grid">
+        <div class="input-side">
+          <label for="message">Message or link</label>
+          <textarea id="message" maxlength="5000" placeholder="Paste suspicious content here..." spellcheck="false"></textarea>
+          <div class="input-meta"><span id="counter">0 / 5,000</span><span>No upload. No account.</span></div>
+          <div class="examples" aria-label="Demo scenarios">
+            <span>Try a scenario</span>
+            <button type="button" data-example="kyc">KYC + OTP</button>
+            <button type="button" data-example="arrest">Digital arrest</button>
+            <button type="button" data-example="job">Job deposit</button>
+            <button type="button" data-example="safe">Safe message</button>
+          </div>
+          <button class="analyze-button" id="analyzeButton" type="button"><span>Analyze privately</span><kbd>Ctrl ↵</kbd></button>
+        </div>
+
+        <div class="result-side" id="resultPanel" aria-live="polite">
+          <div class="empty-state" id="emptyState">
+            <div class="scan-icon"><i></i><i></i><i></i><i></i><span></span></div>
+            <h3>Ready when you are</h3>
+            <p>Analysis runs locally and usually completes in under a blink.</p>
+          </div>
+          <div class="result hidden" id="result">
+            <div class="verdict-row">
+              <div class="risk-gauge" id="riskGauge"><div><strong id="score">0</strong><small>/100</small></div></div>
+              <div><p class="risk-label" id="riskLabel">RISK ASSESSMENT</p><h3 id="verdict"></h3><p id="summary"></p></div>
+            </div>
+            <div class="evidence-head"><span>Why Rakshak flagged this</span><span id="latency"></span></div>
+            <div class="signals" id="signals"></div>
+            <div class="action-box"><strong>Safest next step</strong><p id="primaryAction"></p><button type="button" id="copyReport">Copy safety report</button></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="how" aria-labelledby="how-title">
+      <div class="workspace-head"><div><p class="section-number">02 / HOW IT WORKS</p><h2 id="how-title">Evidence, not a black box</h2></div><p>A hybrid pipeline keeps latency low and explanations useful.</p></div>
+      <div class="pipeline">
+        <article><span>1</span><h3>Extract</h3><p>Find links, payment handles, amounts, phone numbers, and credential requests.</p></article>
+        <article><span>2</span><h3>Reason locally</h3><p>Combine transparent safety rules with an optional INT8 language model on the NPU.</p></article>
+        <article><span>3</span><h3>Guide</h3><p>Show the evidence and a safe verification path without uploading the message.</p></article>
+      </div>
+    </section>
+
+    <section class="snapdragon" aria-labelledby="snapdragon-title">
+      <div><p class="eyebrow">BUILT FOR SNAPDRAGON X SERIES</p><h2 id="snapdragon-title">Fast protection that stays on the PC</h2><p>The production path runs a quantized classifier through ONNX Runtime's QNN Execution Provider. CPU fallback keeps the open-source demo portable.</p></div>
+      <dl><div><dt>0</dt><dd>cloud calls by default</dd></div><div><dt>INT8</dt><dd>NPU model target</dd></div><div><dt>QNN</dt><dd>hardware acceleration path</dd></div></dl>
+    </section>
+  </main>
+
+  <footer><span>Rakshak Edge</span><span>Built by Hariharan C for the Snapdragon AI Lab Build &amp; Present Challenge</span><span>v1.0</span></footer>
+
+  <dialog id="privacyDialog">
+    <button class="close-dialog" id="closeDialog" aria-label="Close">×</button>
+    <p class="section-number">PRIVACY PROOF</p><h2>Your content stays on this device</h2>
+    <div class="proof-line"><span>API destination</span><code>127.0.0.1</code></div>
+    <div class="proof-line"><span>External requests</span><code>0</code></div>
+    <div class="proof-line"><span>Account required</span><code>No</code></div>
+    <p>Rakshak Edge serves its interface and analysis API from the same local process. The default build has no analytics SDK, ad tracker, cloud model, or remote font.</p>
+  </dialog>
+  <script src="/app.js" defer></script>
+</body>
+</html>
