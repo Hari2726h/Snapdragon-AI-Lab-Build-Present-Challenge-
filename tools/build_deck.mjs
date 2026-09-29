@@ -79,8 +79,8 @@ function notes(slide, copy) { slide.speakerNotes.textFrame.setText(copy); }
   text(s, "Transparent signals stay authoritative. A compact classifier adds semantic context and runs on the Hexagon NPU.", 70, 164, 1080, 56, 18, C.muted);
   const stages = [
     ["Input boundary", "Loopback API\nNo persistence", C.panel],
-    ["Evidence engines", "URL + entity rules\nINT8 classifier", "#10261D"],
-    ["Snapdragon path", "ONNX Runtime\nQNN Execution Provider", "#143021"],
+    ["Evidence engines", "URL + entity rules\nLocal semantic model", "#10261D"],
+    ["Snapdragon profile", "INT8 encoder\nONNX Runtime + QNN", "#143021"],
     ["Decision layer", "Calibrated score\nReasons + safe action", "#173927"],
   ];
   stages.forEach((it, i) => {
@@ -95,38 +95,38 @@ function notes(slide, copy) { slide.speakerNotes.textFrame.setText(copy); }
   notes(s, "Technical references: ONNX Runtime QNN Execution Provider, https://onnxruntime.ai/docs/execution-providers/QNN-ExecutionProvider.html; Qualcomm AI Hub, https://aihub.qualcomm.com/");
 }
 
-// 5. Evidence
+// 5. AI evidence
 {
   const s = p.slides.add(); base(s, "LIVE EVIDENCE", "04");
-  text(s, "A KYC scam becomes a teachable decision", 68, 94, 900, 60, 40, C.ink, true);
+  text(s, "AI catches the scam\nwithout a malicious link", 68, 103, 970, 88, 34, C.ink, true, { lineSpacing: 1.0 });
   box(s, 70, 190, 305, 305, C.panel, C.line, 18);
-  text(s, "99", 106, 218, 150, 105, 76, C.red, true); text(s, "/100", 246, 275, 70, 34, 18, C.muted);
+  text(s, "72", 106, 218, 150, 105, 76, C.red, true); text(s, "/100", 246, 275, 70, 34, 18, C.muted);
   text(s, "HIGH RISK", 106, 338, 150, 25, 12, C.red, true, { letterSpacing: 1.5 }); text(s, "Stop and verify independently", 106, 382, 220, 68, 25, C.ink, true);
-  const ev = [["OTP request", "Credential theft signal", "30"], ["Look-alike SBI domain", "Identity mismatch", "26"], ["Expires today", "Artificial urgency", "18"], ["UPI + Rs 10", "Financial ask", "18"]];
-  ev.forEach((a,i)=>{const y=190+i*88;box(s,430,y,760,70,"#0B1C16",C.line,10);box(s,450,y+20,10,10,i<2?C.red:C.amber,i<2?C.red:C.amber,5);text(s,a[0],480,y+15,270,28,18,C.ink,true);text(s,a[1],760,y+17,290,25,15,C.muted);text(s,`+${a[2]}`,1100,y+17,58,25,15,C.lime,true,{textAlign:"right"});});
-  box(s, 70, 550, 1120, 72, "#173323", C.lime, 10); text(s, "SAFEST NEXT STEP", 95, 568, 190, 20, 12, C.lime, true, { letterSpacing: 1.1 }); text(s, "Do not reply, pay, share a code, or open the link yet.", 302, 562, 820, 33, 22, C.ink, true);
-  notes(s, "Evidence shown is the output of the included analyzer for the bundled KYC scenario. The score is a calibrated risk indicator, not proof of fraud.");
+  const ev = [["Semantic scam pattern", "99.8% high-risk confidence", "AI"], ["Voucher purchase", "Financial coercion", "RULE"], ["No URL", "Nothing for a link scanner", "0"], ["No OTP or UPI", "Meaning comes from context", "0"]];
+  ev.forEach((a,i)=>{const y=190+i*88;box(s,430,y,760,70,"#0B1C16",C.line,10);box(s,450,y+20,10,10,i<2?C.red:C.mint,i<2?C.red:C.mint,5);text(s,a[0],480,y+15,270,28,18,C.ink,true);text(s,a[1],760,y+17,290,25,15,C.muted);text(s,a[2],1082,y+17,76,25,14,C.lime,true,{textAlign:"right"});});
+  box(s, 70, 550, 1120, 72, "#173323", C.lime, 10); text(s, "SAFEST NEXT STEP", 95, 568, 190, 20, 12, C.lime, true, { letterSpacing: 1.1 }); text(s, "Call the finance head using the number already in your contacts.", 302, 562, 820, 33, 22, C.ink, true);
+  notes(s, "Input: Finance head here. I cannot take calls. Purchase five vouchers and send the numbers before the client meeting. Output from the checked-in hybrid analyzer: high risk, 72/100; local semantic model high-risk confidence 99.77%. The score is a risk indicator, not proof of fraud.");
 }
 
 // 6. Snapdragon fit
 {
   const s = p.slides.add(); base(s, "SNAPDRAGON ADVANTAGE", "05");
-  text(s, "Privacy and responsiveness\nfrom the same architecture", 68, 104, 1040, 112, 34, C.ink, true, { lineSpacing: 1.0 });
-  const metrics = [["0", "cloud calls in the default build"], ["INT8", "target model precision"], ["QNN", "accelerator execution path"], ["45 TOPS", "Snapdragon X Elite NPU"]];
+  text(s, "Measured locally, designed for Snapdragon", 68, 104, 1040, 72, 38, C.ink, true);
+  const metrics = [["94.44%", "fixed holdout accuracy"], ["18", "unseen holdout messages"], ["7", "regression tests passing"], ["45 TOPS", "Snapdragon X Elite NPU"]];
   metrics.forEach((m,i)=>{const x=70+i*285;box(s,x,245,255,170,i===3?C.lime:C.panel,i===3?C.lime:C.line,16);text(s,m[0],x+22,271,205,58,40,i===3?C.bg:C.lime,true);text(s,m[1],x+22,347,205,45,15,i===3?"#315512":C.muted);});
-  text(s, "Why the NPU matters", 70, 470, 310, 35, 24, C.ink, true);
-  text(s, "The transformer encoder runs without occupying the CPU or sending personal content to a data center. The rules layer remains sub-millisecond and handles crisp security facts.", 70, 520, 1080, 80, 20, C.muted, false, { lineSpacing: 1.25 });
-  text(s, "Target acceptance: warm analysis below 100 ms, no outbound connection, identical label contract on CPU fallback.", 70, 628, 1050, 30, 16, C.mint, true);
-  notes(s, "Qualcomm states Snapdragon X Elite includes a Hexagon NPU with up to 45 TOPS. Source: Snapdragon X Elite product brief, https://docs.qualcomm.com/bundle/publicresource/87-71417-1_REV_D_Snapdragon_X_Elite_Product_Brief.pdf");
+  text(s, "Proof today and an NPU upgrade path", 70, 470, 420, 35, 24, C.ink, true);
+  text(s, "The repository includes the train and holdout corpus, the evaluation script, and the single disclosed model error. The Snapdragon profile upgrades the compact reference model to an INT8 encoder while keeping the same local API and evidence layer.", 70, 520, 1080, 80, 20, C.muted, false, { lineSpacing: 1.25 });
+  text(s, "Holdout: high 6/6, low 6/6, medium 5/6. No cloud call during inference.", 70, 628, 1050, 30, 16, C.mint, true);
+  notes(s, "Model evaluation is reproducible with python benchmarks/evaluate_model.py. 17 of 18 fixed holdout examples correct. Qualcomm states Snapdragon X Elite includes a Hexagon NPU with up to 45 TOPS. Source: Snapdragon X Elite product brief, https://docs.qualcomm.com/bundle/publicresource/87-71417-1_REV_D_Snapdragon_X_Elite_Product_Brief.pdf");
 }
 
 // 7. Validation
 {
   const s = p.slides.add(); base(s, "DEPLOYMENT & ACCESSIBILITY", "06");
-  text(s, "A working submission, not a concept mockup", 68, 94, 900, 60, 40, C.ink, true);
+  text(s, "Working product with measured evidence", 68, 106, 1050, 58, 38, C.ink, true);
   const rows = [
     ["Runs today", "One command, Python standard library, offline demo"],
-    ["Tested", "Safety regression suite and reproducible latency harness"],
+    ["Measured", "Transparent 72-train / 18-holdout corpus and disclosed error"],
     ["Accessible", "Keyboard flow, high contrast, reduced motion, plain language"],
     ["Deployable", "QNN adapter, INT8 model contract, target acceptance checks"],
     ["Responsible", "Threat model, bounded claims, no server-side history"],
@@ -163,6 +163,6 @@ await finalizePresentation({
   layoutArgs: ["--expected-slide-size-emu", "12192000,6858000", "--validate-heading-fit"],
   fontPolicy: { basis: "design", families: [family, "Courier New"] },
   verifyArtifactToolImport: true,
-  receiptPath: path.join(stagingDir, "Rakshak_Edge_Pitch_v3.validation.json"),
+  receiptPath: path.join(stagingDir, "Rakshak_Edge_Pitch_v6.validation.json"),
 });
 console.log(FINAL_PPTX);

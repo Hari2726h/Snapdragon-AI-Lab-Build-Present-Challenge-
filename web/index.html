@@ -53,6 +53,7 @@
             <button type="button" data-example="kyc">KYC + OTP</button>
             <button type="button" data-example="arrest">Digital arrest</button>
             <button type="button" data-example="job">Job deposit</button>
+            <button type="button" data-example="boss">Boss request</button>
             <button type="button" data-example="safe">Safe message</button>
           </div>
           <button class="analyze-button" id="analyzeButton" type="button"><span>Analyze privately</span><kbd>Ctrl ↵</kbd></button>
@@ -69,6 +70,7 @@
               <div class="risk-gauge" id="riskGauge"><div><strong id="score">0</strong><small>/100</small></div></div>
               <div><p class="risk-label" id="riskLabel">RISK ASSESSMENT</p><h3 id="verdict"></h3><p id="summary"></p></div>
             </div>
+            <div class="model-proof"><span>LOCAL SEMANTIC MODEL</span><strong id="modelMeta">Ready</strong><span>NO CLOUD</span></div>
             <div class="evidence-head"><span>Why Rakshak flagged this</span><span id="latency"></span></div>
             <div class="signals" id="signals"></div>
             <div class="action-box"><strong>Safest next step</strong><p id="primaryAction"></p><button type="button" id="copyReport">Copy safety report</button></div>
@@ -81,13 +83,13 @@
       <div class="workspace-head"><div><p class="section-number">02 / HOW IT WORKS</p><h2 id="how-title">Evidence, not a black box</h2></div><p>A hybrid pipeline keeps latency low and explanations useful.</p></div>
       <div class="pipeline">
         <article><span>1</span><h3>Extract</h3><p>Find links, payment handles, amounts, phone numbers, and credential requests.</p></article>
-        <article><span>2</span><h3>Reason locally</h3><p>Combine transparent safety rules with an optional INT8 language model on the NPU.</p></article>
+        <article><span>2</span><h3>Reason locally</h3><p>Combine transparent safety rules with a trained local semantic model. The Snapdragon profile upgrades it to QNN.</p></article>
         <article><span>3</span><h3>Guide</h3><p>Show the evidence and a safe verification path without uploading the message.</p></article>
       </div>
     </section>
 
     <section class="snapdragon" aria-labelledby="snapdragon-title">
-      <div><p class="eyebrow">BUILT FOR SNAPDRAGON X SERIES</p><h2 id="snapdragon-title">Fast protection that stays on the PC</h2><p>The production path runs a quantized classifier through ONNX Runtime's QNN Execution Provider. CPU fallback keeps the open-source demo portable.</p></div>
+      <div><p class="eyebrow">BUILT FOR SNAPDRAGON X SERIES</p><h2 id="snapdragon-title">Fast protection that stays on the PC</h2><p>The working demo already performs hybrid inference fully offline. Its Snapdragon production profile upgrades the semantic classifier to an INT8 encoder through ONNX Runtime's QNN Execution Provider.</p></div>
       <dl><div><dt>0</dt><dd>cloud calls by default</dd></div><div><dt>INT8</dt><dd>NPU model target</dd></div><div><dt>QNN</dt><dd>hardware acceleration path</dd></div></dl>
     </section>
   </main>

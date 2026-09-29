@@ -4,7 +4,7 @@ from reportlab.lib.pagesizes import landscape
 from reportlab.pdfgen import canvas
 
 ROOT = Path(__file__).resolve().parents[1]
-SOURCE = ROOT / "tmp" / "ppt-render-v3"
+SOURCE = ROOT / "tmp" / "ppt-render-v6"
 OUT = ROOT / "submission" / "Rakshak_Edge_Pitch.pdf"
 PAGE = landscape((720, 405))
 

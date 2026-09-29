@@ -4,6 +4,7 @@ const examples = {
   kyc: "Dear customer, your SBI KYC expires today. To avoid account suspension, verify immediately at sbi-kyc-secure.xyz and share the OTP sent to your mobile. Pay Rs 10 processing fee to verify@upi.",
   arrest: "Police Cyber Cell: You are under digital arrest for an illegal parcel. Stay on the call, do not tell anyone, and transfer ₹25,000 immediately to avoid legal action.",
   job: "Congratulations! You are selected for a remote job. Deposit INR 2,999 to hrdesk@upi today to unlock your laptop and offer letter.",
+  boss: "Finance head here. I cannot take calls. Purchase five vouchers and send the numbers before the client meeting.",
   safe: "Official security notice: never share your OTP, PIN, CVV, or password. Report suspicious requests through the bank's official app."
 };
 let lastResult = null;
@@ -43,6 +44,7 @@ function render(data){
   $("riskGauge").style.background=`conic-gradient(${color} ${data.score}%, #183028 0)`;
   $("riskLabel").textContent=`${data.level.toUpperCase()} RISK`; $("riskLabel").style.color=color;
   $("verdict").textContent=data.verdict; $("summary").textContent=data.summary;
+  $("modelMeta").textContent=`${data.model.label.toUpperCase()} • ${(data.model.confidence*100).toFixed(1)}% confidence`;
   $("latency").textContent=`${data.meta.latency_ms} ms • local`;
   $("signals").replaceChildren(...(data.signals.length?data.signals.map(s=>{
     const row=document.createElement("div");row.className="signal-item";
@@ -66,5 +68,5 @@ if (demo && examples[demo]) {
   document.body.classList.add("analysis-view");
   message.value = examples[demo];
   message.dispatchEvent(new Event("input"));
-  setTimeout(analyze, 120);
+  analyze();
 }

@@ -29,6 +29,15 @@ class AnalyzerTests(unittest.TestCase):
         self.assertIn("refunddesk@upi", result["entities"]["upi_ids"])
         self.assertIn("4,999", result["entities"]["amounts_inr"])
 
+    def test_semantic_model_catches_linkless_impersonation(self):
+        result = analyze("Finance head here. I cannot take calls. Purchase five vouchers and send the numbers before the client meeting.")
+        self.assertIn(result["level"], {"medium", "high"})
+        self.assertIn(result["model"]["label"], {"medium", "high"})
+
+    def test_model_metadata_is_exposed(self):
+        result = analyze("Please review the quarterly budget before the finance meeting.")
+        self.assertIn("probabilities", result["model"])
+
 
 if __name__ == "__main__":
     unittest.main()

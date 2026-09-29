@@ -13,7 +13,7 @@ SECRETS = {
 
 PAYMENT = {
     "upi", "pay now", "transfer", "refund fee", "processing fee", "deposit",
-    "gift card", "crypto", "wallet", "collect request", "scan qr", "rs ", "₹",
+    "gift card", "gift cards", "voucher", "vouchers", "crypto", "wallet", "collect request", "scan qr", "₹",
     "payment", "cashback", "prize", "lottery", "kyc fee",
 }
 

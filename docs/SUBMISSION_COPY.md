@@ -6,7 +6,7 @@ Rakshak Edge: A Private On-Device Social-Engineering Firewall for Snapdragon PCs
 
 ## Brief description
 
-Rakshak Edge is a local AI safety assistant that analyzes suspicious messages, payment requests, QR payloads, and links before a user acts. It detects urgency, impersonation, credential theft, risky URLs, and Indian payment signals, then explains the evidence and recommends a safer verification path. The hybrid pipeline combines transparent security rules with an optional INT8 language classifier accelerated through ONNX Runtime QNN on the Snapdragon Hexagon NPU. The default demo works fully offline with no account, telemetry, or cloud upload. Its accessible interface supports realistic KYC, digital-arrest, and job-scam scenarios, while the repository includes tests, a benchmark harness, a threat model, and a production deployment guide.
+Rakshak Edge is a local AI safety assistant that analyzes suspicious messages, payment requests, QR payloads, and links before a user acts. It detects urgency, impersonation, credential theft, risky URLs, and Indian payment signals, then explains the evidence and recommends a safer verification path. The working hybrid pipeline combines transparent security rules with a trained multilingual semantic classifier that reaches 94.44% accuracy on the bundled fixed holdout set. A Snapdragon production profile upgrades the compact reference model to an INT8 encoder accelerated through ONNX Runtime QNN on the Hexagon NPU. The demo works fully offline with no account, telemetry, or cloud upload. The repository includes the corpus, evaluation script, tests, benchmark harness, threat model, and deployment guide.
 
 ## One-line pitch
 

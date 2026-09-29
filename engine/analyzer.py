@@ -12,6 +12,7 @@ from difflib import SequenceMatcher
 from urllib.parse import parse_qs, urlparse
 
 from .rules import BRAND_DOMAINS, HIGH_RISK_TLDS, IMPERSONATION, PAYMENT, PRESSURE, SAFE_CONTEXT, SECRETS, SHORTENERS, URGENCY
+from .model import get_model
 
 URL_RE = re.compile(r"(?:(?:https?://|www\.)[^\s<>'\"]+|(?:[a-z0-9-]+\.)+[a-z]{2,}(?:/[^\s<>'\"]*)?)", re.I)
 UPI_RE = re.compile(r"\b[a-z0-9._-]{2,}@[a-z]{2,}\b", re.I)
@@ -99,9 +100,21 @@ def analyze(message: str) -> dict:
     if amounts and (upi or _terms(lower, PAYMENT)):
         signals.append(Signal("Specific financial ask", "A precise amount can make a fabricated request feel routine.", 8, "payment", "₹" + ", ₹".join(amounts[:3])))
 
+    semantic = get_model().predict(clean)
+    if semantic["label"] == "high" and semantic["confidence"] >= 0.48:
+        signals.append(Signal("Semantic scam pattern", "The local language model recognizes a high-risk request even without relying on a malicious link.", round(16 + semantic["confidence"] * 12), "semantic", f"{semantic['confidence'] * 100:.1f}% model confidence"))
+    elif semantic["label"] == "medium" and semantic["confidence"] >= 0.46:
+        signals.append(Signal("Uncertain sender intent", "The local language model found a suspicious request pattern that deserves verification.", round(7 + semantic["confidence"] * 8), "semantic", f"{semantic['confidence'] * 100:.1f}% model confidence"))
+
     safe_discount = 20 if _terms(lower, SAFE_CONTEXT) else 0
     raw = sum(item.weight for item in signals)
     score = max(0, min(99, round(100 * (1 - math.exp(-raw / 65)) - safe_discount)))
+    if semantic["label"] == "high" and semantic["confidence"] >= 0.92:
+        score = max(score, 72)
+    elif semantic["label"] == "high" and semantic["confidence"] >= 0.60:
+        score = max(score, 55)
+    elif semantic["label"] == "medium" and semantic["confidence"] >= 0.60:
+        score = max(score, 42)
     if any(s.category == "credential" for s in signals) and any(s.category in {"payment", "link"} for s in signals):
         score = min(99, score + 8)
     if {"pressure", "payment", "identity"}.issubset({s.category for s in signals}):
@@ -134,7 +147,8 @@ def analyze(message: str) -> dict:
         "signals": [asdict(s) for s in sorted(signals, key=lambda x: x.weight, reverse=True)[:8]],
         "entities": {"links": urls[:5], "upi_ids": upi[:5], "phone_numbers": phones[:5], "amounts_inr": amounts[:5]},
         "actions": actions,
-        "meta": {"latency_ms": round(elapsed_ms, 2), "backend": "Transparent hybrid / CPU fallback", "privacy": "Processed locally. Nothing uploaded."},
+        "model": semantic,
+        "meta": {"latency_ms": round(elapsed_ms, 2), "backend": "Rules + local semantic n-gram model", "privacy": "Processed locally. Nothing uploaded."},
     }
 
 

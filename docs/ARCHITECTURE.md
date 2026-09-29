@@ -9,9 +9,10 @@ Rakshak Edge must deliver a useful answer when the PC is offline, keep sensitive
 1. The local web app sends content only to `127.0.0.1`.
 2. Entity extraction finds URLs, UPI handles, phone numbers, amounts, and credential terms.
 3. The deterministic layer scores visible social-engineering patterns and URL structure.
-4. The optional INT8 classifier adds semantic context through ONNX Runtime.
-5. A calibrated fusion layer combines both scores and keeps the top supporting evidence.
-6. The response returns a risk band, plain-language evidence, and safe actions.
+4. The bundled word and character n-gram model adds semantic context locally.
+5. The Snapdragon production profile can replace that compact reference model with an INT8 encoder through ONNX Runtime QNN.
+6. A calibrated fusion layer combines both scores and keeps the top supporting evidence.
+7. The response returns a risk band, plain-language evidence, and safe actions.
 
 ## Production topology
 
@@ -23,8 +24,8 @@ Input boundary (size limit, no persistence)
   |
   +-- Entity and URL analyzer ------------------+
   |                                             |
-  +-- INT8 text classifier                      |
-      ONNX Runtime -> QNN EP -> Hexagon NPU     |
+  +-- Local semantic n-gram classifier          |
+      Production: INT8 encoder -> QNN -> NPU    |
                                                 v
                                   Evidence fusion and calibration
                                                 |
@@ -34,7 +35,7 @@ Input boundary (size limit, no persistence)
 
 ## Why hybrid
 
-Security decisions need traceable evidence. Rules catch crisp, high-risk facts such as a raw-IP link or an OTP request. A compact classifier handles paraphrases and mixed language. The rule layer also supplies a dependable fallback when a model or accelerator is unavailable.
+Security decisions need traceable evidence. Rules catch crisp, high-risk facts such as a raw-IP link or an OTP request. The checked-in compact classifier handles paraphrases and mixed language today. The rule layer also supplies a dependable fallback when a model or accelerator is unavailable.
 
 ## Data boundary
 
@@ -47,7 +48,7 @@ Security decisions need traceable evidence. Rules catch crisp, high-risk facts s
 
 ## Model contract
 
-The production classifier accepts token IDs and an attention mask and produces logits for `benign`, `suspicious`, and `high-risk`. The recommended candidate is a MobileBERT-class encoder fine-tuned on consented and synthetic Indian scam examples, exported to ONNX, statically quantized to INT8, and compiled or profiled for Snapdragon through Qualcomm AI Hub.
+The checked-in reference classifier uses multinomial Naive Bayes over word, word-bigram, and character n-gram features. It trains deterministically from 72 transparent examples and is evaluated on a fixed 18-message holdout. The production classifier accepts token IDs and an attention mask and produces logits for `low`, `medium`, and `high`. The recommended NPU candidate is a MobileBERT-class encoder fine-tuned on a larger consented and synthetic Indian scam corpus, exported to ONNX, statically quantized to INT8, and compiled or profiled for Snapdragon through Qualcomm AI Hub.
 
 ## Failure behavior
 

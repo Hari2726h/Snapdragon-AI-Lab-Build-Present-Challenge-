@@ -16,9 +16,9 @@ Point to the score, top signals, measured latency, and safest next step.
 
 ## 0:45 - 1:05 | A harder scam
 
-Choose **Digital arrest**.
+Choose **Boss request**.
 
-"This example has no malicious link. Rakshak still recognizes authority impersonation, secrecy, call control, and an immediate transfer request. That is where the semantic model adds value beyond link scanners."
+"This example has no malicious link, OTP, UPI handle, or fake domain. The bundled semantic model still recognizes the executive-impersonation and voucher pattern. Its model output and confidence appear directly in the interface."
 
 ## 1:05 - 1:20 | Responsible behavior
 
@@ -28,4 +28,4 @@ Choose **Safe message**.
 
 ## 1:20 - 1:30 | Snapdragon fit
 
-"On Snapdragon X Series, the quantized classifier runs through ONNX Runtime QNN on the Hexagon NPU. The private data stays local, the CPU stays free, and protection remains available offline."
+"The complete hybrid demo already runs locally. The Snapdragon production profile upgrades the compact reference classifier to a quantized encoder through ONNX Runtime QNN on the Hexagon NPU. The private data stays local and protection remains available offline."
